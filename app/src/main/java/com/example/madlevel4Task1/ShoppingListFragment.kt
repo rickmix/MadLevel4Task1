@@ -1,4 +1,4 @@
-package com.example.madlevel4example
+package com.example.madlevel4Task1
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -48,8 +49,12 @@ class ShoppingListFragment : Fragment() {
         productRepository = ProductRepository(requireContext())
         getProductsFromDatabase()
 
-        fab.setOnClickListener {
+        fabAddProduct.setOnClickListener {
             showProductDialog()
+        }
+
+        fabDeleteAll.setOnClickListener {
+            removeAllProducts()
         }
     }
 
@@ -69,6 +74,36 @@ class ShoppingListFragment : Fragment() {
         builder.show()
     }
 
+    private fun addProduct(txtProductName: EditText, txtAmount: EditText) {
+        if (validateFields(txtProductName, txtAmount)) {
+            mainScope.launch {
+                val product = Product(
+                    productName = txtProductName.text.toString(),
+                    productQuantity = txtAmount.text.toString().toInt()
+                )
+
+                withContext(Dispatchers.IO) {
+                    productRepository.insertProduct(product)
+                }
+
+                getProductsFromDatabase()
+            }
+        }
+    }
+
+    private fun validateFields(txtProductName: EditText
+                               , txtAmount: EditText
+    ): Boolean {
+        return if (txtProductName.text.toString().isNotBlank()
+            && txtAmount.text.toString().isNotBlank()
+        ) {
+            true
+        } else {
+            Toast.makeText(activity, "Please fill in the fields", Toast.LENGTH_LONG).show()
+            false
+        }
+    }
+
     private fun getProductsFromDatabase() {
         mainScope.launch {
             val shoppingList = withContext(Dispatchers.IO) {
@@ -76,39 +111,16 @@ class ShoppingListFragment : Fragment() {
             }
             this@ShoppingListFragment.shoppingList.clear()
             this@ShoppingListFragment.shoppingList.addAll(shoppingList)
-            productAdapter.notifyDataSetChanged()
+            this@ShoppingListFragment.productAdapter.notifyDataSetChanged()
         }
     }
 
     private fun initViews() {
-        rvReminders.layoutManager =
+        rvShoppingList.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL,false)
-        rvReminders.adapter = productAdapter
-        rvReminders.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-        observeAddReminderResult()
-        createItemTouchHelper().attachToRecyclerView(rvReminders)
-    }
-
-    private fun observeAddReminderResult() {
-        setFragmentResultListener(REQ_PRODUCT_KEY) { key, bundle ->
-                var name = ""
-                var quantity: Int = 0
-
-                bundle.getString(BUNDLE_PRODUCT_KEY_NAME)?.let {
-                    name = it
-                } ?: Log.e("SecondFragment", "Request triggered, but empty title text!")
-
-                bundle.getInt(BUNDLE_PRODUCT_KEY_QUANTITY)?.let {
-                    quantity = it
-                } ?: Log.e("SecondFragment", "Request triggered, but empty url text!")
-
-                mainScope.launch {
-                    withContext(Dispatchers.IO) {
-                        productRepository.insertProduct(Product(name, quantity))
-                    }
-                    getProductsFromDatabase()
-                }
-        }
+        rvShoppingList.adapter = productAdapter
+        rvShoppingList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        createItemTouchHelper().attachToRecyclerView(rvShoppingList)
     }
 
     private fun createItemTouchHelper(): ItemTouchHelper {
@@ -124,8 +136,15 @@ class ShoppingListFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//                val position = viewHolder.adapterPosition
+//                val productToDelete = shoppingList[position]
+//                mainScope.launch {
+//                    withContext(Dispatchers.IO) {
+//                        productRepository.deleteProduct(productToDelete)
+//                    }
+//                    getProductsFromDatabase()
+//                }
                 val position = viewHolder.adapterPosition
-
                 val productToDelete = shoppingList[position]
                 mainScope.launch {
                     withContext(Dispatchers.IO) {
@@ -137,5 +156,15 @@ class ShoppingListFragment : Fragment() {
         }
         return ItemTouchHelper(callback)
     }
+
+    private fun removeAllProducts() {
+        mainScope.launch {
+            withContext(Dispatchers.IO) {
+                productRepository.deleteAllProducts()
+            }
+            getProductsFromDatabase()
+        }
+    }
+
 
 }

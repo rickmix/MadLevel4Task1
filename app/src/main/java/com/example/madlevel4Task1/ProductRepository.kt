@@ -1,8 +1,8 @@
-package com.example.madlevel4example
+package com.example.madlevel4Task1
 
 import android.content.Context
 
-public class ProductRepository(context: Context) {
+class ProductRepository(context: Context) {
     private var productDao: ProductDao
 
     init {

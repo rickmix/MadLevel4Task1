@@ -1,4 +1,4 @@
-package com.example.madlevel4example
+package com.example.madlevel4Task1
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,20 +16,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
-
-        navController = findNavController(R.id.nav_host_fragment)
-
-        fab.setOnClickListener{
-            //TODO DELETE all items
-        }
-
-//        fab2.setOnClickListener{
-//            navController.navigate(
-//                R.id.action_remindersFragment_to_addReminderFragment
-//            )
-//        }
-
-        fabToggler()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -45,19 +31,6 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun fabToggler() {
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id in
-                    arrayOf(R.id.addReminderFragment)) {
-                fab.hide()
-                fab2.hide()
-            } else {
-                fab.show()
-                fab2.show()
-            }
         }
     }
 }
