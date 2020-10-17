@@ -14,8 +14,9 @@ import kotlinx.android.synthetic.main.fragment_add_reminder.*
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-const val REQ_REMINDER_KEY = "req_reminder"
-const val BUNDLE_REMINDER_KEY = "bundle_reminder"
+const val REQ_PRODUCT_KEY = "req_reminder"
+const val BUNDLE_PRODUCT_KEY_NAME = "bundle_product_name"
+const val BUNDLE_PRODUCT_KEY_QUANTITY = "bundle_product_quantity"
 
 class AddReminderFragment : Fragment() {
 
@@ -28,25 +29,30 @@ class AddReminderFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        btnAddReminder.setOnClickListener {
-            onAddReminder()
-        }
+//        btnAddReminder.setOnClickListener {
+//            onAddReminder()
+//        }
 
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun onAddReminder() {
-        val reminderText = etReminderName.text.toString()
-
-        if(reminderText.isNotBlank()) {
-            setFragmentResult(REQ_REMINDER_KEY, bundleOf(Pair(BUNDLE_REMINDER_KEY, reminderText)))
-
-            findNavController().popBackStack()
-        } else {
-            Toast.makeText(
-                activity,
-                R.string.not_valid_reminder, Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
+//    private fun onAddReminder() {
+//        // TODO INPUT AANPASSEN
+//        val reminderText = etReminderName.text.toString()
+//        val urlTitle = input_title.text.toString()
+//        val Url = input_url.text.toString()
+//
+//        if(reminderText.isNotBlank()) {
+//            setFragmentResult(REQ_PRODUCT_KEY, bundleOf(
+//                BUNDLE_PRODUCT_KEY_NAME to urlTitle, BUNDLE_PRODUCT_KEY_QUANTITY to Url
+//            ))
+//
+//            findNavController().popBackStack()
+//        } else {
+//            Toast.makeText(
+//                activity,
+//                R.string.not_valid_reminder, Toast.LENGTH_SHORT
+//            ).show()
+//        }
+//    }
 }

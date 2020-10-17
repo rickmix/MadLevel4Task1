@@ -20,10 +20,14 @@ class MainActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment)
 
         fab.setOnClickListener{
-            navController.navigate(
-                R.id.action_remindersFragment_to_addReminderFragment
-            )
+            //TODO DELETE all items
         }
+
+//        fab2.setOnClickListener{
+//            navController.navigate(
+//                R.id.action_remindersFragment_to_addReminderFragment
+//            )
+//        }
 
         fabToggler()
     }
@@ -49,8 +53,10 @@ class MainActivity : AppCompatActivity() {
             if(destination.id in
                     arrayOf(R.id.addReminderFragment)) {
                 fab.hide()
+                fab2.hide()
             } else {
                 fab.show()
+                fab2.show()
             }
         }
     }

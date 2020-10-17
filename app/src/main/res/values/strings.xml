@@ -7,4 +7,8 @@
     <string name="add_your_reminder">Add your reminder</string>
     <string name="reminder_name">Reminder name</string>
     <string name="not_valid_reminder">Invalid reminder</string>
+    <string name="add_product_dialog_title">Add a product to your list!</string>
+    <string name="dialog_ok_btn">OK</string>
+    <string name="add_product">Add product</string>
+    <string name="amount">Amount</string>
 </resources>

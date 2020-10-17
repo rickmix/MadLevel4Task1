@@ -4,10 +4,14 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "reminderTable")
-data class Reminder(
-    @ColumnInfo(name = "reminder")
-    var reminderText: String,
+@Entity(tableName = "product_table")
+data class Product(
+    @ColumnInfo(name = "productName")
+    var productName: String,
+
+
+    @ColumnInfo(name = "productQuantity")
+    var productQuantity: Int,
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

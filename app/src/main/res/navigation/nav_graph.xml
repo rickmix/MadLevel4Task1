@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/remindersFragment"
-        android:name="com.example.madlevel4example.RemindersFragment"
+        android:name="com.example.madlevel4example.ShoppingListFragment"
         android:label="fragment_reminders"
         tools:layout="@layout/fragment_reminders" >
         <action
